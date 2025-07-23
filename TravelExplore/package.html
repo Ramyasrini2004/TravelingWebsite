@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WanderVerse</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0d1b2a;
+      color: #ffffff;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ffff;
+      margin-bottom: 40px;
+      font-size: 2.8rem;
+    }
+
+    .package-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .package-card {
+      width: 300px;
+      height: 500px;
+      background: #1b263b;
+      border-radius: 12px;
+      padding: 20px;
+      border: 2px solid transparent;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .package-card:hover {
+      border-color: #00ffff;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+      transform: translateY(-6px);
+    }
+
+    .package-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .package-title {
+      font-size: 1.5rem;
+      color: #00ffff;
+      margin-bottom: 10px;
+    }
+
+    .features {
+      font-size: 0.9rem;
+      color: #cdeaff;
+      margin-bottom: 10px;
+    }
+
+    .package-info {
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ff66cc;
+      margin-bottom: 15px;
+    }
+
+    .book-btn {
+      background-color: #00ffff;
+      color: #003344;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      align-self: flex-start;
+    }
+
+    .book-btn:hover {
+      background-color: #003344;
+      color: #00ffff;
+      box-shadow: 0 0 12px #00ffff, 0 0 24px #00ffff;
+    }
+
+    /* Popup Styles */
+    .popup-overlay,
+    .confirm-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-box,
+    .confirm-box {
+      background: #1b263b;
+      padding: 30px;
+      border-radius: 12px;
+      border: 2px solid #00ffff;
+      box-shadow: 0 0 15px #00ffff88;
+      max-width: 500px;
+      width: 100%;
+      animation: fadeIn 0.4s ease;
+      color: white;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .popup-box h2,
+    .confirm-box h2 {
+      margin-bottom: 20px;
+      color: #00ffff;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 2px solid #003344;
+      border-radius: 6px;
+      transition: 0.3s ease;
+      background-color: #e6faff;
+      color: #002233;
+    }
+
+    .input-field:focus,
+    .input-field:hover {
+      border-color: #00ffff;
+      outline: none;
+      box-shadow: 0 0 10px #00ffff88;
+      background-color: #ffffff;
+    }
+
+    .popup-box button,
+    .confirm-box button {
+      padding: 10px 20px;
+      border: none;
+      margin: 8px 5px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .cancel-btn {
+      background: #ccc;
+    }
+
+    .book-trip-btn,
+    .confirm-box button {
+      background: #00ffff;
+      color: #003344;
+    }
+
+    .tick {
+      font-size: 60px;
+      color: lime;
+      margin-bottom: 10px;
+    }
+
+    .confirmation-message {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+
+    .back-home {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: rgba(0, 255, 255, 0.15);
+      color: #00ffff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 0 8px #00ffff88;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .back-home:hover {
+      background-color: rgba(0, 255, 255, 0.35);
+      color: #fff;
+      box-shadow: 0 0 12px #00ffff, 0 0 24px #00ffff;
+    }
+
+    .input-field.invalid {
+      border-color: red !important;
+      background-color: #ffe6e6;
+    }
+
+    .error-msg {
+      color: red;
+      font-size: 0.85rem;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    @media (max-width: 767px) {
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        margin-top: 30px;
+      }
+
+      .package-card {
+        width: 90%;
+        height: auto;
+        padding: 16px;
+      }
+
+      .package-card img {
+        height: 180px;
+      }
+
+      .back-home {
+        padding: 8px 14px;
+        font-size: 0.9rem;
+      }
+
+      .popup-box,
+      .confirm-box {
+        padding: 20px;
+        max-width: 90%;
+      }
+
+      .popup-box h2,
+      .confirm-box h2 {
+        font-size: 1.4rem;
+      }
+
+      .input-field {
+        font-size: 0.9rem;
+        padding: 10px;
+      }
+
+      .book-trip-btn,
+      .cancel-btn {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .tick {
+        font-size: 40px;
+      }
+
+      .confirmation-message {
+        font-size: 1rem;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+
+      h1 {
+        margin-top: 40px;
+      }
+
+      .package-card {
+        width: 45%;
+        height: auto;
+      }
+
+      .package-card img {
+        height: 200px;
+      }
+
+      .popup-box,
+      .confirm-box {
+        max-width: 90%;
+      }
+
+      .input-field {
+        font-size: 1rem;
+        padding: 11px;
+      }
+
+      .tick {
+        font-size: 50px;
+      }
+
+      .confirmation-message {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Exclusive Travel Packages</h1>
+
+  <a href="../index.html" class="back-home">← Back to Home</a>
+
+  <div class="package-container">
+    <div class="package-card">
+      <img src="./images/itali1.jpg" alt="Italy">
+      <div class="package-title">Italy – Romantic Escape</div>
+      <div class="features">Venice, Rome, Florence tours</div>
+      <div class="package-info">People: 2</div>
+      <div class="price">₹99,000</div>
+      <button class="book-btn" onclick="openBookingPopup()">Book Now</button>
+    </div>
+
+    <div class="package-card">
+      <img src="./images/thai1.jpg" alt="Thailand">
+      <div class="package-title">Thailand – Tropical Adventure</div>
+      <div class="features">Islands, temples, street food</div>
+      <div class="package-info">People: 2</div>
+      <div class="price">₹72,500</div>
+      <button class="book-btn" onclick="openBookingPopup()">Book Now</button>
+    </div>
+
+    <div class="package-card">
+      <img src="./images/amazon1.jpg" alt="Amazon">
+      <div class="package-title">Amazon – Jungle Trek</div>
+      <div class="features">Jungle trek, wildlife, camping</div>
+      <div class="package-info">People: 2</div>
+      <div class="price">₹1,19,000</div>
+      <button class="book-btn" onclick="openBookingPopup()">Book Now</button>
+    </div>
+
+    <div class="package-card">
+      <img src="./images/sl1.jpg" alt="Sri Lanka">
+      <div class="package-title">Sri Lanka – Island Paradise</div>
+      <div class="features">Tea hills, temples, beaches</div>
+      <div class="package-info">People: 2</div>
+      <div class="price">₹67,000</div>
+      <button class="book-btn" onclick="openBookingPopup()">Book Now</button>
+    </div>
+
+    <div class="package-card">
+      <img src="./images/paris1.jpg" alt="Paris">
+      <div class="package-title">Paris – City of Love</div>
+      <div class="features">Eiffel, Louvre, Seine cruise</div>
+      <div class="package-info">People: 2</div>
+      <div class="price">₹88,800</div>
+      <button class="book-btn" onclick="openBookingPopup()">Book Now</button>
+    </div>
+
+    <div class="package-card">
+      <img src="./images/arg1.jpg" alt="Argentina">
+      <div class="package-title">Argentina – Andean Escape</div>
+      <div class="features">Glaciers, Andes, tango shows</div>
+      <div class="package-info">People: 2</div>
+      <div class="price">₹1,08,500</div>
+      <button class="book-btn" onclick="openBookingPopup()">Book Now</button>
+    </div>
+
+    <div class="package-card">
+      <img src="./images/mexico1.jpg" alt="Mexico">
+      <div class="package-title">Mexico – Fiesta Tour</div>
+      <div class="features">Ruins, beaches, tacos</div>
+      <div class="package-info">People: 2</div>
+      <div class="price">₹85,000</div>
+      <button class="book-btn" onclick="openBookingPopup()">Book Now</button>
+    </div>
+  </div>
+
+  <!-- Booking Form -->
+  <div class="popup-overlay" id="bookingPopup">
+    <div class="popup-box">
+      <h2>Book Your Journey</h2>
+
+      <input type="text" class="input-field" id="fullName" placeholder="Full Name">
+      <div class="error-msg" id="nameError"></div>
+
+      <input type="email" class="input-field" id="email" placeholder="Email Address">
+      <div class="error-msg" id="emailError"></div>
+
+      <input type="tel" class="input-field" id="mobile" placeholder="Mobile Number">
+      <div class="error-msg" id="mobileError"></div>
+
+      <input type="tel" class="input-field" id="whatsapp" placeholder="WhatsApp Number">
+      <div class="error-msg" id="whatsappError"></div>
+
+      <!-- <textarea class="input-field" id="address" rows="3" placeholder="Full Address"></textarea>
+      <div class="error-msg" id="addressError"></div> -->
+
+      <select class="input-field" id="destination">
+        <option value="">Select Destination</option>
+        <option>Italy</option>
+        <option>Thailand</option>
+        <option>Amazon</option>
+        <option>Sri Lanka</option>
+        <option>Paris</option>
+        <option>Argentina</option>
+        <option>Mexico</option>
+      </select>
+      <div class="error-msg" id="destinationError"></div>
+
+      <input type="date" class="input-field" id="date">
+      <div class="error-msg" id="dateError"></div>
+
+      <input type="number" class="input-field" id="people" placeholder="Number of People">
+      <div class="error-msg" id="peopleError"></div>
+
+      <select class="input-field" id="payment">
+        <option value="">Select Payment Method</option>
+        <option>Google Pay</option>
+        <option>PhonePe</option>
+        <option>UPI</option>
+        <option>Credit Card</option>
+        <option>Debit Card</option>
+        <option>Cash</option>
+      </select>
+      <div class="error-msg" id="paymentError"></div>
+
+      <button class="book-trip-btn" onclick="showConfirmation()">Book Your Journey</button>
+      <button class="cancel-btn" onclick="closePopup()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Confirm Booking -->
+  <div class="confirm-overlay" id="confirmPopup">
+    <div class="confirm-box">
+      <h2>Confirm Booking?</h2>
+      <button onclick="finalConfirm()">Yes</button>
+      <button onclick="closePopup()">No</button>
+    </div>
+  </div>
+
+  <!-- Final Confirmation Message -->
+  <div class="confirm-overlay" id="finalMessage">
+    <div class="confirm-box">
+      <div class="tick">✔</div>
+      <div class="confirmation-message">
+        Your booking is confirmed!<br>
+        We’ll reach you soon. Be ready for your adventure!
+      </div>
+      <button style="margin-top: 20px;" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <!-- Validation Script -->
+  <script>
+    function openBookingPopup() {
+      document.getElementById('bookingPopup').style.display = 'flex';
+    }
+
+    function closePopup() {
+      document.getElementById('bookingPopup').style.display = 'none';
+      document.getElementById('confirmPopup').style.display = 'none';
+      document.getElementById('finalMessage').style.display = 'none';
+
+      // Reset form and errors
+      const fields = document.querySelectorAll('.input-field');
+      fields.forEach(f => {
+        f.classList.remove('invalid');
+      });
+
+      const errors = document.querySelectorAll('.error-msg');
+      errors.forEach(e => {
+        e.innerText = '';
+        e.style.display = 'none';
+      });
+    }
+
+    function showConfirmation() {
+      const fields = [
+        { id: 'fullName', error: 'nameError', message: 'Full Name is required' },
+        { id: 'email', error: 'emailError', message: 'Email is required' },
+        { id: 'mobile', error: 'mobileError', message: 'Mobile number is required' },
+        { id: 'whatsapp', error: 'whatsappError', message: 'WhatsApp number is required' },
+        { id: 'destination', error: 'destinationError', message: 'Select a destination' },
+        { id: 'date', error: 'dateError', message: 'Select travel date' },
+        { id: 'people', error: 'peopleError', message: 'Number of people is required' },
+        { id: 'payment', error: 'paymentError', message: 'Select a payment method' }
+      ];
+
+      let isValid = true;
+
+      fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        const errorDiv = document.getElementById(field.error);
+        const value = input.value.trim();
+
+        const invalidSelect = (input.tagName === "SELECT" && value === "");
+
+        if (!value || invalidSelect) {
+          input.classList.add('invalid');
+          errorDiv.innerText = field.message;
+          errorDiv.style.display = 'block';
+          isValid = false;
+        } else {
+          input.classList.remove('invalid');
+          errorDiv.innerText = '';
+          errorDiv.style.display = 'none';
+        }
+      });
+
+      if (isValid) {
+        document.getElementById('bookingPopup').style.display = 'none';
+        document.getElementById('confirmPopup').style.display = 'flex';
+      }
+    }
+
+    function finalConfirm() {
+      document.getElementById('confirmPopup').style.display = 'none';
+      document.getElementById('finalMessage').style.display = 'flex';
+    }
+  </script>
+
+</body>
+
+</html>

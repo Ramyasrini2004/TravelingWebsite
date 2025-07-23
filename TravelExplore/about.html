@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WanderVerse</title>
+  <script src="https://kit.fontawesome.com/c70c990fee.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0e0e0e;
+      color: #e0e0e0;
+      line-height: 1.8;
+    }
+
+    a {
+      color: #bbb;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #00ffff;
+    }
+
+    .back-home {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: rgba(0, 255, 255, 0.15);
+      color: #00ffff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 0 8px #00ffff88;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .back-home:hover {
+      background-color: rgba(0, 255, 255, 0.35);
+      color: #fff;
+      box-shadow: 0 0 12px #00ffff, 0 0 24px #00ffff;
+    }
+
+    header {
+      background-color: #001f1f;
+      padding: 50px 20px;
+      text-align: center;
+      border-bottom: 1px solid #00ffff22;
+      box-shadow: 0 0 10px #00ffff33;
+    }
+
+    header h1 {
+      font-size: 42px;
+      color: #00ffff;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 16px;
+      color: #bbb;
+    }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 50px 20px;
+    }
+
+    section {
+      margin-bottom: 50px;
+    }
+
+    section h2 {
+      font-size: 28px;
+      color: #00ffff;
+      margin-bottom: 15px;
+      text-shadow: 0 0 6px #00ffff88;
+      border-left: 4px solid #00ffff99;
+      padding-left: 12px;
+    }
+
+    section p {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    ul li {
+      margin-bottom: 10px;
+      color: #ddd;
+    }
+
+    .review-section {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .review-section h1 {
+      font-size: 2.8rem;
+      color: #00ffff;
+      margin-bottom: 40px;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+
+    .reviews {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .review-card {
+      background: linear-gradient(145deg, #1a1c23, #0d0e13);
+      border-radius: 20px;
+      padding: 25px;
+      position: relative;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.08);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      animation: scaleIn 0.6s forwards ease;
+      transform-style: preserve-3d;
+      perspective: 800px;
+    }
+
+    .review-card:hover {
+      transform: rotateX(3deg) rotateY(3deg);
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+    }
+
+    .review-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #00ffff99;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .review-card h3 {
+      font-size: 1.2rem;
+      color: #00ffff;
+      margin-bottom: 10px;
+    }
+
+    .stars {
+      color: gold;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .review-card:hover .stars {
+      transform: scale(1.2) rotate(2deg);
+      text-shadow: 0 0 8px gold;
+    }
+
+    .review-card p {
+      color: #ccc;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .write-review-btn {
+      margin-top: 50px;
+      padding: 14px 30px;
+      font-size: 1rem;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(270deg, #00ffff, #ff00ff, #00ffff);
+      background-size: 600% 600%;
+      animation: glow 4s ease infinite;
+      box-shadow: 0 0 20px #00ffff55;
+      cursor: pointer;
+      transition: transform 0.4s;
+    }
+
+    .write-review-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #00ffffaa;
+    }
+
+    @keyframes glow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes scaleIn {
+      0% {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Footer */
+    footer {
+      background-color: #001f1f;
+      padding: 60px 20px;
+      color: #ccc;
+      margin-top: 80px;
+      border-top: 1px solid #00ffff22;
+      box-shadow: 0 -2px 10px #00ffff22;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    footer h3 {
+      color: #00ffff;
+      margin-bottom: 16px;
+    }
+
+    footer ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    footer ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 40px;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    .social-icons a {
+      margin-right: 15px;
+      font-size: 1.6rem;
+      color: #00ffff;
+    }
+
+    @media (max-width: 768px) {
+
+      .review-section{
+        padding: 20px;
+      }
+      .review-section h1 {
+        font-size: 2rem;
+      }
+       header h1 {
+     margin-top: 40px;
+    }
+    main{
+      padding: 20px;
+    }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>About WanderVerse</h1>
+    <p>Explore the world. Discover yourself. Travel reimagined.</p>
+  </header>
+  <a href="../index.html" class="back-home">← Back to Home</a>
+
+  <!-- Main Content -->
+  <main>
+    <section>
+      <h2>Overview</h2>
+      <p>
+        WanderVerse is a comprehensive travel platform dedicated to making journeys memorable, easy, and safe. 
+        From personalized destination planning to seamless travel experiences, we offer services that cater 
+        to modern-day adventurers, families, and explorers.
+      </p>
+      <p>
+        Whether you're seeking thrilling escapades or peaceful retreats, WanderVerse is your go-to 
+        companion for creating unforgettable travel memories.
+      </p>
+    </section>
+
+    <section>
+      <h2>Our Journey</h2>
+      <p>
+        Launched in 2023 by a group of passionate travelers and developers, WanderVerse started as a 
+        community blog for adventure seekers. As we grew, so did our mission — to offer all-in-one 
+        travel services for individuals and groups worldwide.
+      </p>
+      <p>
+        By 2025, WanderVerse had served thousands of travelers, partnered with local experts, and expanded 
+        into guided tours, transport coordination, and round-the-clock assistance.
+      </p>
+    </section>
+
+    <section>
+      <h2>Why Travel is Important</h2>
+      <p>
+        Travel nurtures empathy, expands your worldview, and offers a break from everyday stress. It’s not 
+        just about destinations — it’s about the journey, the people you meet, the food you taste, and 
+        the experiences that shape your life.
+      </p>
+      <p>
+        WanderVerse believes in meaningful, sustainable, and mindful travel that leaves you enriched and 
+        inspired.
+      </p>
+    </section>
+
+    <section>
+      <h2>Our Services</h2>
+      <ul>
+        <li><strong>Food:</strong> Delicious local and global meal options curated for your comfort and health.</li>
+        <li><strong>Accommodation:</strong> Hand-selected hotels, resorts, and stays to suit every travel style.</li>
+        <li><strong>Pickup & Drop:</strong> Reliable transport from your home to your destination and back.</li>
+        <li><strong>Adventures:</strong> Guided experiences including hiking, water sports, and cultural activities.</li>
+        <li><strong>Sightseeing:</strong> Custom sightseeing packages covering iconic spots and hidden gems.</li>
+        <li><strong>Entry Tickets:</strong> Pre-booked passes to avoid queues and delays.</li>
+        <li><strong>24/7 Support:</strong> A dedicated support team available around the clock for all your travel needs.</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Review Section -->
+  <section class="review-section">
+    <h1>What Our Travelers Say</h1>
+    <div class="reviews">
+      <!-- Review Cards -->
+      <div class="review-card">
+        <img src="https://i.pravatar.cc/80?img=12" alt="User">
+        <h3>Priya S.</h3>
+        <div class="stars">★★★★★</div>
+        <p>Had a wonderful experience! The itinerary was perfectly planned and accommodations were comfortable. Highly recommended!</p>
+      </div>
+
+      <div class="review-card">
+        <img src="https://i.pravatar.cc/80?img=8" alt="User">
+        <h3>John D.</h3>
+        <div class="stars">★★★★☆</div>
+        <p>The tour guides were friendly and knowledgeable. Everything ran smoothly from booking to return. Would love to travel again with you!</p>
+      </div>
+
+      <div class="review-card">
+        <img src="https://i.pravatar.cc/80?img=20" alt="User">
+        <h3>Sneha R.</h3>
+        <div class="stars">★★★★★</div>
+        <p>Best vacation ever! The adventure activities were thrilling, and the food was just amazing. Thank you for a memorable trip.</p>
+      </div>
+
+      <div class="review-card">
+        <img src="https://i.pravatar.cc/80?img=31" alt="User">
+        <h3>Ahmed K.</h3>
+        <div class="stars">★★★★☆</div>
+        <p>Service was excellent and the trip was well organized. Just wish we had more time at the final destination. Still a great trip overall!</p>
+      </div>
+
+      <div class="review-card">
+        <img src="https://i.pravatar.cc/80?img=44" alt="User">
+        <h3>Linda M.</h3>
+        <div class="stars">★★★★★</div>
+        <p>I was impressed with how smooth the process was. From booking to the return flight, everything was stress-free. Thank you!</p>
+      </div>
+
+      <div class="review-card">
+        <img src="https://i.pravatar.cc/80?img=51" alt="User">
+        <h3>Karthik B.</h3>
+        <div class="stars">★★★★★</div>
+        <p>This was my honeymoon trip and it was magical! Loved the luxury resort and special candlelight dinner arrangements. 💙</p>
+      </div>
+    </div>
+    <button class="write-review-btn">Write a Review</button>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contacts">
+    <div class="footer-container">
+      <div>
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="./blogs.html">Services</a></li>
+          <li><a href="./package.html">Contact</a></li>
+          <li><a href="./services.html">Services</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Our Branches</h3>
+        <ul>
+          <li>Paris, France</li>
+          <li>Rome, Italy</li>
+          <li>Bangkok, Thailand</li>
+          <li>Colombo, Sri Lanka</li>
+          <li>Buenos Aires, Argentina</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Contact Us</h3>
+        <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+        <p><i class="fas fa-envelope"></i> support@wanderverse.com</p>
+        <p><i class="fas fa-map-marker-alt"></i> 123 Global Lane, Wander City</p>
+      </div>
+
+      <div>
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f" style="color: blue;"></i></a>
+          <a href="#"><i class="fab fa-instagram" style="color: rgb(255, 3, 137);"></i></a>
+          <a href="#"><i class="fab fa-twitter" style="color: rgb(5, 183, 254);"></i></a>
+          <a href="#"><i class="fab fa-youtube" style="color: red;"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 WanderVerse. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>
+

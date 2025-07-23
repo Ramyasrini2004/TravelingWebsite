@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WanderVerse</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      background-color: #111;
+    }
+
+    .blog-title {
+      text-align: center;
+      font-size: 35px;
+      margin-bottom: 15px;
+      color: #00ffff;
+      text-shadow: 2px 2px 8px #000;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+    .background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      filter: blur(8px) brightness(0.5);
+    }
+
+    .blog-container {
+      position: relative;
+      z-index: 2;
+      padding: 20px 20px;
+      max-width: 1300px;
+      margin: auto;
+      color: white;
+    }
+
+    .country-bar {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .country-bar button {
+      position: relative;
+      padding: 12px 25px;
+      border: none;
+      background-color: transparent;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      overflow: hidden;
+      z-index: 1;
+      transition: transform 0.3s ease, color 0.3s ease;
+      border: 2px solid cyan;
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+    }
+
+    .country-bar button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 255, 255, 0.7);
+      z-index: -1;
+      transition: left 0.4s ease;
+    }
+
+    .country-bar button:hover::before {
+      left: 0;
+    }
+
+    .country-bar button:hover {
+      font-size: 20px;
+      color: #111;
+      transform: scale(1.05);
+      box-shadow: 0 0 10px cyan, 0 0 20px cyan;
+    }
+
+
+    .video-display video,
+    .video-display img {
+      width: 100%;
+      height: 540px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .media-flex-container {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .video-display {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .image-gallery-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 620px;
+      overflow-y: auto;
+    }
+
+    .image-gallery-vertical img {
+      width: 160px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .image-gallery-vertical img:hover {
+      transform: scale(1.05);
+    }
+
+    .content-box {
+      margin-top: 30px;
+    }
+
+    .content-box h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .content-box p {
+      line-height: 1.6;
+    }
+
+    .package-link {
+      position: relative;
+      display: inline-block;
+      padding: 12px 24px;
+      color: white;
+      background-color: #23e15c;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      overflow: hidden;
+      z-index: 1;
+      transition: color 0.4s ease;
+      box-shadow: 0 0 8px #1aa37a;
+    }
+
+    .package-link::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #137e5c;
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+      z-index: -1;
+    }
+
+    .package-link:hover {
+      color: #fff;
+      box-shadow: 0 0 10px #1aa37a, 0 0 20px #1aa37a, 0 0 40px #1aa37a;
+    }
+
+    .package-link:hover::before {
+      transform: translateX(0);
+    }
+
+    .back-home {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: rgba(0, 255, 255, 0.15);
+      color: #00ffff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 0 8px #00ffff88;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .back-home:hover {
+      background-color: rgba(0, 255, 255, 0.35);
+      color: #fff;
+      box-shadow: 0 0 12px #00ffff, 0 0 24px #00ffff;
+    }
+
+
+    @media (max-width: 767px) {
+      .blog-title {
+        font-size: 24px;
+        margin-top: 60px;
+      }
+
+      .country-bar {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .country-bar button {
+        width: 90%;
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+
+      .media-flex-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .video-display,
+      .video-display video,
+      .video-display img {
+        width: 100%;
+        height: 220px;
+        border-radius: 10px;
+      }
+
+      .image-gallery-vertical {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-height: none;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .image-gallery-vertical img {
+        width: 100px;
+        height: 70px;
+      }
+
+      .content-box h2 {
+        font-size: 20px;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .content-box p {
+        font-size: 15px;
+        text-align: justify;
+        padding: 0 10px;
+      }
+
+      .package-link {
+        display: block;
+        text-align: center;
+        margin: 20px auto 0;
+        font-size: 15px;
+        padding: 10px 20px;
+      }
+
+      .back-home {
+        top: 10px;
+        left: 10px;
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background Blurred Video -->
+  <video class="background-video" id="backgroundVideo" autoplay muted loop>
+    <source src="../videos2/Italy.webm" type="video/mp4">
+  </video>
+
+  <h1 class="blog-title">Global Escapes 🌍</h1>
+
+  <a href="../index.html" class="back-home">← Back to Home</a>
+
+  <!-- Blog Container -->
+  <div class="blog-container">
+    <div class="country-bar">
+      <button onclick="selectCountry('italy')">Italy</button>
+      <button onclick="selectCountry('argentina')">Argentina</button>
+      <button onclick="selectCountry('amazon')">Amazon</button>
+      <button onclick="selectCountry('paris')">Paris</button>
+      <button onclick="selectCountry('mexico')">Mexico</button>
+      <button onclick="selectCountry('srilanka')">Sri Lanka</button>
+      <button onclick="selectCountry('thailand')">Thailand</button>
+    </div>
+
+    <!-- Video and Image side-by-side -->
+    <div class="media-flex-container">
+      <div class="video-display" id="mainMediaContainer">
+        <video id="mainVideo" autoplay muted loop>
+          <source src="../videos2/Italy.webm" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="image-gallery-vertical" id="imageGallery">
+        <!-- Images will load here dynamically -->
+      </div>
+    </div>
+
+    <div class="content-box" id="countryContent">
+      <h2>Italy</h2>
+      <p>Italy is a captivating mosaic of culture, art, and gastronomy. From the ruins of Rome to the canals of Venice,
+        every city holds timeless wonders. Marvel at Renaissance masterpieces in Florence or sip wine among the rolling
+        vineyards of Tuscany. In the south, the Amalfi Coast enchants with its scenic cliffs and azure seas. Italy’s
+        cuisine is world famous fresh pasta, creamy gelato, and wood fired pizza satisfy every craving. The country
+        celebrates life with passion, whether through fashion in Milan or festivals in small towns. Rich in heritage and
+        natural beauty, Italy invites travelers to indulge in la dolce vita the sweet life.</p>
+    </div>
+
+    <a href="package.html" class="package-link">View Tour Packages</a>
+  </div>
+
+  <script>
+    const countryData = {
+      italy: {
+        video: '../videos2/italy.webm',
+        images: ['itali1.jpg', 'itali2.jpg', 'itali3.jpg', 'itali4.jpg', 'itali5.jpg'],
+        content: `Italy is a captivating mosaic of culture, art, and gastronomy. From the ruins of Rome to the canals of Venice, every city holds timeless wonders. Marvel at Renaissance masterpieces in Florence or sip wine among the rolling vineyards of Tuscany. In the south, the Amalfi Coast enchants with its scenic cliffs and azure seas. Italy’s cuisine is world famous fresh pasta, creamy gelato, and wood fired pizza satisfy every craving. The country celebrates life with passion, whether through fashion in Milan or festivals in small towns. Rich in heritage and natural beauty, Italy invites travelers to indulge in la dolce vita the sweet life.`
+      },
+      argentina: {
+        video: '../videos2/argentina.mp4',
+        images: ['arg1.jpg', 'arg2.jpg', 'arg3.jpg', 'arg4.jpg', 'arg5.jpg'],
+        content: `Argentina is a land of striking contrasts from the icy glaciers of Patagonia to the bustling tango filled streets of Buenos Aires. Discover the power of Iguazu Falls, one of the world’s most breathtaking natural wonders, or hike through the Andes mountains for awe-inspiring views. In the Pampas, traditional gauchos live out the country’s cowboy culture. Argentina is a paradise for food lovers with its world-renowned beef, empanadas, and Malbec wines. Experience the passion of football fans and the elegance of European-inspired architecture. With warm people and diverse landscapes, Argentina offers both adventure and culture in unforgettable measure.`
+      },
+      amazon: {
+        video: '../videos2/amazon.mp4',
+        images: ['amazon1.jpg', 'amazon2.jpg', 'amazon3.jpg', 'amazon4.jpg', 'amazon5.jpg'],
+        content: `The Amazon is Earth’s largest tropical rainforest, teeming with extraordinary biodiversity and mystery. It spans multiple countries, with the Brazilian portion being the most well-known. Journey through winding rivers, dense foliage, and remote villages where nature remains untouched. Exotic wildlife like jaguars, monkeys, toucans, and pink dolphins await curious explorers. The sounds of the jungle, from chirping cicadas to distant howler monkeys, create a symphony of wilderness. Indigenous tribes, medicinal plants, and powerful waterfalls contribute to the Amazon’s allure. This awe-inspiring ecosystem offers not just adventure but a humbling reminder of nature’s power, beauty, and importance in sustaining life on Earth.`
+      },
+      paris: {
+        video: '../videos2/paris.mp4',
+        images: ['paris1.jpg', 'paris2.jpg', 'paris3.jpg', 'paris4.jpg', 'paris5.jpg'],
+        content: `Paris, the City of Lights, is a timeless blend of history, romance, and art. From the iconic Eiffel Tower to the charming streets of Montmartre, every corner of Paris exudes elegance and culture. Explore world-renowned museums like the Louvre and Musée d'Orsay, or enjoy a boat ride along the Seine River. Indulge in croissants, fine wine, and delectable French cuisine at cozy cafés. The vibrant fashion, majestic architecture, and poetic ambiance make Paris a dream destination for travelers seeking inspiration, sophistication, and unforgettable memories. Whether day or night, Paris enchants with its timeless beauty and cultural richness.`
+      },
+      mexico: {
+        video: '../videos1/mexico.mp4',
+        images: ['mexico1.jpg', 'mexico2.jpg', 'mexico3.jpg', 'mexico4.jpg', 'mexico5.jpg'],
+        content: `Mexico is a colorful tapestry of history, traditions, and vibrant culture. Ancient civilizations like the Aztecs and Mayans left behind awe-inspiring ruins such as Chichen Itza and Teotihuacan. Relax on sun-soaked beaches in Cancun or explore colonial cities like Guanajuato. Savor the spicy, flavorful cuisine from tacos to tamales and dance to lively mariachi music. From Day of the Dead celebrations to breathtaking cenotes and tropical jungles, Mexico offers a diverse experience. Whether you're exploring bustling markets or serene seaside resorts, the country’s rich heritage, friendly people, and energetic spirit create a warm and welcoming atmosphere for every traveler.`
+      },
+      srilanka: {
+        video: '../videos1/srilanka.mp4',
+        images: ['sl1.jpg', 'sl2.jpg', 'sl3.jpg', 'sl4.jpg', 'sl5.jpg'],
+        content: `Sri Lanka, the pearl of the Indian Ocean, is a compact island nation rich in culture, history, and natural splendor. Ancient cities like Anuradhapura and Sigiriya whisper tales of royal dynasties and Buddhist traditions. Lush tea plantations roll over the central highlands, while golden beaches line the southern coast. Spot elephants in national parks or surf the turquoise waves of Arugam Bay. The island’s cuisine is a flavorful blend of spices, coconut, and fresh produce. Friendly locals, diverse landscapes, and a deep spiritual ambiance make Sri Lanka a unique gem perfect for those seeking both relaxation and cultural immersion.`
+      },
+      thailand: {
+        video: '../videos1/thailand.mp4',
+        images: ['thai1.jpg', 'thai2.jpg', 'thai3.jpg', 'thai4.jpg', 'thai5.jpg'],
+        content: `Thailand, known as the Land of Smiles, offers a perfect mix of vibrant cities, tropical beaches, and serene temples. Wander through Bangkok’s bustling markets or explore the ancient ruins of Ayutthaya. The northern mountains of Chiang Mai are ideal for nature lovers and cultural immersion. In the south, islands like Phuket and Koh Phi Phi welcome you with turquoise waters and palm-fringed shores. Thai cuisine, with its aromatic spices and flavors, is a feast for the senses. From golden Buddha statues to floating markets, Thailand’s charm lies in its warm hospitality, spiritual heritage, and spectacular natural beauty.`
+      }
+    };
+
+    window.onload = () => {
+      selectCountry('italy');
+    };
+
+    function selectCountry(key) {
+      const data = countryData[key];
+
+      // Background video update
+      const bgVideo = document.getElementById('backgroundVideo');
+      bgVideo.src = data.video;
+      bgVideo.load();
+
+      // Main media
+      const media = document.getElementById('mainMediaContainer');
+      media.innerHTML = `
+        <video autoplay muted loop>
+          <source src="${data.video}" type="video/mp4">
+        </video>
+      `;
+
+      // Image gallery (right side)
+      const gallery = document.getElementById('imageGallery');
+      gallery.innerHTML = '';
+      data.images.forEach(img => {
+        const image = document.createElement('img');
+        image.src = `images/${img}`;
+        image.onclick = () => {
+          media.innerHTML = `<img src="images/${img}" style="width:100%; height:540px; object-fit:cover; border-radius:12px;" />`;
+        };
+        gallery.appendChild(image);
+      });
+
+      // Text content
+      document.getElementById('countryContent').innerHTML = `
+        <h2>${key.charAt(0).toUpperCase() + key.slice(1)}</h2>
+        <p>${data.content}</p>
+      `;
+    }
+  </script>
+</body>
+
+</html>
